@@ -27,7 +27,7 @@ def token_fixture(request):
     This allows us to more easily test the logic of the routes, without
     being tripped up by the authentication constantly.
     """
-    app.dependency_overrides[login_required] = auth_required_override
+    app.dependency_overrides[auth_required] = auth_required_override
 
     def teardown():
         app.dependency_overrides = {}
