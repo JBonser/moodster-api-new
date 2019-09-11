@@ -9,9 +9,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app import config
 
-engine = create_engine(
-    config.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 db_session = scoped_session(

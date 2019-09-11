@@ -1,4 +1,5 @@
 # Moodster API
+
 Moodster API Project
 
 ## Installation
@@ -60,8 +61,10 @@ This will generate a database migration revision which you should then go and in
 generated. This process can sometimes work incorrectly so it's important to check this revision file before comitting.
 
 ## Initialising the database with default data
+
 For development of the application it is sometimes useful to have some default data in the database so you don't have to re-create this every time.
 To apply this defult data, simply call this script after you've ran the database migrations above:
-```
+
+```bash
 python -m scripts.dev_db_initialise
 ```
