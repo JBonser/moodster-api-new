@@ -6,14 +6,13 @@ import pytest
 
 from app.main import app
 from app.users.crud import create_user
-from app.database.base import db_session
 from app.users.schema import UserCreate
 
 client = TestClient(app)
 
 
 @pytest.fixture()
-def test_db_user():
+def test_db_user(db_session):
     test_user_create = UserCreate(
         first_name="john",
         surname="smith",
@@ -24,7 +23,7 @@ def test_db_user():
     return test_user_create
 
 
-def test_auth_login_success(db_fixture, test_db_user):
+def test_auth_login_success(db_session, test_db_user):
     login_data = {"username": test_db_user.email, "password": test_db_user.password}
     response = client.post("/auth/", data=login_data)
 
@@ -32,7 +31,7 @@ def test_auth_login_success(db_fixture, test_db_user):
     assert "access_token" in response.json()
 
 
-def test_auth_login_fails_with_incorrect_password(db_fixture, test_db_user):
+def test_auth_login_fails_with_incorrect_password(db_session, test_db_user):
     login_data = {"username": test_db_user.email, "password": "incorred_password"}
     response = client.post("/auth/", data=login_data)
 
@@ -40,7 +39,7 @@ def test_auth_login_fails_with_incorrect_password(db_fixture, test_db_user):
     assert response.json()["detail"] == "Could not validate email or password"
 
 
-def test_auth_login_fails_with_unknown_user(db_fixture, test_db_user):
+def test_auth_login_fails_with_unknown_user(db_session, test_db_user):
     login_data = {"username": "nobody@live.com", "password": test_db_user.password}
     response = client.post("/auth/", data=login_data)
 

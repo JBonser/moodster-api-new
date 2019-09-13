@@ -12,6 +12,7 @@ services:
       - api-net
 
   moodster-api:
+      image: moodster-api
       build:
         context: .
       depends_on:

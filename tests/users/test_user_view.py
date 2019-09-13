@@ -3,10 +3,8 @@ Test module for the user resource/endpoint.
 """
 from starlette.testclient import TestClient
 import pytest
-
 from app.main import app
 from app.users.crud import create_user, get_user_by_email
-from app.database.base import db_session
 from app.users.schema import UserCreate
 
 client = TestClient(app)
@@ -18,7 +16,7 @@ def test_user():
     return test_user_create
 
 
-def test_user_creation_success(db_fixture, test_user):
+def test_user_creation_success(db_session, test_user):
     user_create_schema = test_user
     response = client.post("/users/", json=user_create_schema.dict())
     user = get_user_by_email(db_session, user_create_schema.email)
@@ -29,7 +27,7 @@ def test_user_creation_success(db_fixture, test_user):
     assert json_response["public_id"] == user.public_id
 
 
-def test_user_creation_fails_with_duplicate_entry(db_fixture, test_user):
+def test_user_creation_fails_with_duplicate_entry(db_session, test_user):
     user_create_schema = test_user
     create_user(db_session, user_create_schema)
 
@@ -38,7 +36,7 @@ def test_user_creation_fails_with_duplicate_entry(db_fixture, test_user):
     assert "user with this email already exists" in response.json()["detail"]
 
 
-def test_user_get(db_fixture, test_user, token_fixture):
+def test_user_get(db_session, test_user, token_fixture):
     user_create_schema = test_user
     user = create_user(db_session, user_create_schema)
 
@@ -49,7 +47,7 @@ def test_user_get(db_fixture, test_user, token_fixture):
     assert json_response["public_id"] == user.public_id
 
 
-def test_user_get_fails_without_authenticating(db_fixture, test_user):
+def test_user_get_fails_without_authenticating(db_session, test_user):
     test_user_create = test_user
     user = create_user(db_session, test_user_create)
 

@@ -16,11 +16,3 @@ db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
 )
 Base = declarative_base()
-
-
-def init_database():
-    Base.metadata.create_all(bind=engine)
-
-
-def destroy_database():
-    Base.metadata.drop_all(bind=engine)
