@@ -1,5 +1,5 @@
 """
-This module defines the actual database ORM model of the User resource.
+This module defines the actual database ORM model of the Team resource.
 It is the representation that is used to describe how the database schema
 will look.
 """
@@ -11,7 +11,7 @@ from app.database.base import Base
 class Team(Base):
     """ Team Model for storing team related details """
 
-    __tablename__ = "team"
+    __tablename__ = "teams"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     public_id = Column(String(100), unique=True)

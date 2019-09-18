@@ -4,3 +4,4 @@ models into alembic for the auto-generation of migrations.
 """
 from app.database.base import Base  # noqa
 from app.users.model import User  # noqa
+from app.teams.model import Team  # noqa
