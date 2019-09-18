@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:11
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - env-postgres.env
+    networks:
+      - api-net
+
+  moodster-api:
+      image: moodster-api
+      build:
+        context: .
+      depends_on:
+        - db
+      env_file:
+        - env-postgres.env
+      ports:
+        - 80:80
+      networks:
+        - api-net
+
+networks:
+  api-net:
+
+volumes:
+  db-data:

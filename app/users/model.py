@@ -11,10 +11,10 @@ from app.database.base import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    public_id = db.Column(db.String(100), unique=True, nullable=False)
-    email = db.Column(db.String(length=120), unique=True, nullable=False)
-    password = db.Column(db.String(length=128), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    public_id = Column(String(100), unique=True, nullable=False)
+    email = Column(String(length=120), unique=True, nullable=False)
+    password = Column(String(length=128), nullable=False)
 
     def __repr__(self):
         return (

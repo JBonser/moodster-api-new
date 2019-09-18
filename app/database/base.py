@@ -9,20 +9,10 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app import config
 
-engine = create_engine(
-    config.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
 )
 Base = declarative_base()
-
-
-def init_database():
-    Base.metadata.create_all(bind=engine)
-
-
-def destroy_database():
-    Base.metadata.drop_all(bind=engine)

@@ -11,9 +11,10 @@ from app.users.view import router as user_router
 from app.auth.view import router as auth_router
 from app.database.base import Session
 
-app = FastAPI(title="Exam API")
+app = FastAPI(title="Moodster API")
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
+
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):

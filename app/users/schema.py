@@ -3,7 +3,7 @@ The schema module is responsible for defining the serialization models
 for the user resource. It is used to provide validation of the data payloads
 of the routes in the view module.
 """
-from pydantic import BaseModel, UUID4, SecretStr
+from pydantic import BaseModel, UUID4
 
 
 class UserBase(BaseModel):
@@ -11,7 +11,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: SecretStr
+    password: str
 
 
 class User(UserBase):

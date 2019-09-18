@@ -6,8 +6,15 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# must provide the env var for postgres db
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///exam_api.db"
 SECRET_KEY = os.getenv("SECRET_KEY", "completely_unsafe_dev_key")
 HASH_ALGORITHM = os.getenv("HASH_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINS = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINS") or 30)
+
+# Postgres Envs
+POSTGRES_SERVER = os.getenv("POSTGRES_SERVER")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+SQLALCHEMY_DATABASE_URI = (
+    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DB}"
+)
