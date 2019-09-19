@@ -4,4 +4,4 @@ services:
 before_install:
   - docker-compose -f docker-compose.yml build 
 script:
-  - docker-compose -f docker-compose.yml run moodster-api bash -c "pytest --cov-report term --cov=app/ tests/ && codecov"
+  - docker-compose -f docker-compose.yml run moodster-api bash -c "pytest --cov-report term --cov=app/ tests/ && codecov --required -t e42a3f45-5e04-47b3-b862-0d6c67535cc5"
