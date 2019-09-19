@@ -2,6 +2,8 @@
 
 Moodster API Project
 
+[![codecov](https://codecov.io/gh/JBonser/moodster-api-new/branch/master/graph/badge.svg)](https://codecov.io/gh/JBonser/moodster-api-new)
+
 ## Running the Application
 
 ### Development
