@@ -1,0 +1,7 @@
+dist: xenial
+services:
+  - docker
+before_install:
+  - docker-compose -f docker-compose.yml build 
+script:
+  - docker-compose -f docker-compose.yml run moodster-api bash -c "pytest --cov-report term --cov=app/ tests/ && codecov"
