@@ -10,12 +10,14 @@ from starlette.responses import Response
 from app.users.view import router as user_router
 from app.auth.view import router as auth_router
 from app.teams.view import router as team_router
+from app.team_roles.view import router as team_role_router
 from app.database.base import Session
 
 app = FastAPI(title="Moodster API")
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(team_router, prefix="/teams", tags=["teams"])
+app.include_router(team_role_router, prefix="/team_roles", tags=["team_roles"])
 
 
 @app.middleware("http")
