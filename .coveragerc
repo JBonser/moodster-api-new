@@ -1,2 +1,5 @@
 [run]
 omit = app/database/models.py
+
+[report]
+exclude_lines = def __repr__
