@@ -2,23 +2,14 @@
 Test module for the team role resource/endpoint.
 """
 from starlette.testclient import TestClient
-import pytest
 from app.main import app
 from app.team_roles.crud import create_team_role
-from app.team_roles.schema import TeamRoleCreate
 
 client = TestClient(app)
 
 
-@pytest.fixture()
-def test_team_roles():
-    member_role = TeamRoleCreate(name="Member")
-    admin_role = TeamRoleCreate(name="Admin")
-    return member_role, admin_role
-
-
-def test_team_roles_get_default_roles(db_session, test_team_roles):
-    member, admin = test_team_roles
+def test_team_roles_get_default_roles(db_session, default_team_roles):
+    member, admin = default_team_roles
     member_role = create_team_role(db_session, member)
     admin_role = create_team_role(db_session, admin)
 

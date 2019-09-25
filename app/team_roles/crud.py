@@ -18,3 +18,7 @@ def create_team_role(db: Session, team_role: schema.TeamRoleCreate):
     db.commit()
     db.refresh(team_role)
     return team_role
+
+
+def get_role(db: Session, role_id):
+    return db.query(model.TeamRole).filter_by(public_id=role_id).first()
