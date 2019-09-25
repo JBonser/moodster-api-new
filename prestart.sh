@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
 # Let the DB start
-sleep 10;
+sleep 15;
 # Run migrations
-alembic upgrade head
+alembic -x data=true upgrade head
