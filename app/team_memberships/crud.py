@@ -11,14 +11,6 @@ from app.team_roles.model import TeamRole
 from app.team_memberships import model
 
 
-def get_team_membership(db: Session, membership_id: str):
-    return (
-        db.query(model.Membership)
-        .filter(model.Membership.public_id == membership_id)
-        .first()
-    )
-
-
 def get_all_memberships_for_team(db: Session, team_id: str):
     team = db.query(Team).filter(Team.public_id == team_id).first()
     if not team:
