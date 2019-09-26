@@ -4,8 +4,9 @@ the application. It is the entrypoint of any web request for the team membership
 resource.
 """
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from starlette.status import HTTP_409_CONFLICT
 
 from app.exception import NoResourceWithIdError
 from app.team_memberships import crud, schema
@@ -21,7 +22,9 @@ router = APIRouter()
 
 @router.post("/", response_model=schema.TeamMembership, status_code=201)
 async def create_team_membership(
-    team_membership: schema.TeamMembershipCreate, db: Session = Depends(get_db)
+    team_membership: schema.TeamMembershipCreate,
+    db: Session = Depends(get_db),
+    auth_user: User = Depends(auth_required),
 ):
     user = get_user(db, team_membership.user_id)
     if not user:
@@ -35,12 +38,21 @@ async def create_team_membership(
     if not role:
         raise NoResourceWithIdError("role", team_membership.role_id)
 
+    found = crud.membership_already_exists(db=db, user=user, team=team, role=role)
+    if found:
+        raise HTTPException(
+            HTTP_409_CONFLICT,
+            detail="The user already has membership of that role within the team",
+        )
+
     return crud.create_team_membership(db=db, user=user, team=team, role=role)
 
 
 @router.get("/", response_model=List[schema.TeamMembership])
 async def get_all_memberships_for_team(
-    team_id: str, db: Session = Depends(get_db), user: User = Depends(auth_required)
+    team_id: str,
+    db: Session = Depends(get_db),
+    auth_user: User = Depends(auth_required),
 ):
     memberships = crud.get_all_memberships_for_team(db, team_id)
     if not memberships:

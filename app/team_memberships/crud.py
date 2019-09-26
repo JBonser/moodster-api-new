@@ -20,10 +20,10 @@ def get_team_membership(db: Session, membership_id: str):
 
 
 def get_all_memberships_for_team(db: Session, team_id: str):
-    team = db.query(model.Team).filter(model.Team.public_id == team_id).all()
+    team = db.query(Team).filter(Team.public_id == team_id).first()
     if not team:
         return None
-    return db.query(model.Membership).filter_by(model.Membership.team == team).all()
+    return db.query(model.Membership).filter_by(team=team).all()
 
 
 def create_team_membership(db: Session, user: User, team: Team, role: TeamRole):
@@ -34,3 +34,10 @@ def create_team_membership(db: Session, user: User, team: Team, role: TeamRole):
     db.commit()
     db.refresh(membership)
     return membership
+
+
+def membership_already_exists(db: Session, user, team, role):
+    membership = (
+        db.query(model.Membership).filter_by(team=team, user=user, role=role).first()
+    )
+    return membership is not None
