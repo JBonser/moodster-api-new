@@ -2,6 +2,7 @@
 
 Moodster API Project
 
+[![Build Status](https://travis-ci.com/JBonser/moodster-api-new.svg?branch=master)](https://travis-ci.com/JBonser/moodster-api-new)
 [![codecov](https://codecov.io/gh/JBonser/moodster-api-new/branch/master/graph/badge.svg)](https://codecov.io/gh/JBonser/moodster-api-new)
 
 ## Running the Application
