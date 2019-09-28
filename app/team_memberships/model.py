@@ -14,16 +14,16 @@ class Membership(Base):
     __tablename__ = "memberships"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    public_id = Column(String(100), unique=True)
-    team_id = Column(Integer, ForeignKey("teams.id"))
+    public_id = Column(String(100), unique=True, nullable=False)
+    team_id = Column(Integer, ForeignKey("teams.id"), nullable=False)
     team = relationship(
         "Team", backref=backref("memberships", cascade="delete, delete-orphan")
     )
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = relationship(
         "User", backref=backref("memberships", cascade="delete, delete-orphan")
     )
-    role_id = Column(Integer, ForeignKey("team_roles.id"))
+    role_id = Column(Integer, ForeignKey("team_roles.id"), nullable=False)
     role = relationship(
         "TeamRole", backref=backref("memberships", cascade="delete, delete-orphan")
     )
