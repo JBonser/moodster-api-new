@@ -7,6 +7,8 @@ import pytest
 from app.main import app
 from app.database.base import Base, db_session as session
 from app.auth.depends import auth_required
+from app.team_roles.schema import TeamRoleCreate
+from app.team_roles.crud import create_team_role
 from tests.dependency_overrides import auth_required_override
 
 
@@ -55,3 +57,15 @@ def token_fixture(request):
         app.dependency_overrides = {}
 
     request.addfinalizer(teardown)
+
+
+@pytest.fixture()
+def default_team_roles(db_session):
+    """
+    Test fixture for creating the two default roles.
+    """
+    member_role = TeamRoleCreate(name="Member")
+    admin_role = TeamRoleCreate(name="Admin")
+    member = create_team_role(db=db_session, team_role=member_role)
+    admin = create_team_role(db=db_session, team_role=admin_role)
+    return member, admin

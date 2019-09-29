@@ -11,7 +11,7 @@ from app.database.base import Base
 class TeamRole(Base):
     """ Team Role Model for storing team role details """
 
-    __tablename__ = "team_role"
+    __tablename__ = "team_roles"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     public_id = Column(String(100), unique=True)
