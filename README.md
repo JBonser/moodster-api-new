@@ -46,7 +46,7 @@ If you change any of the database models you will need to run alembic to allow i
 so that it can try and generate the migration script for you. To do this you need to run:
 
 ```bash
-alembic revision --autogenerate
+docker-compose run moodster-api bash -c "sleep 20 && alembic -x data=true upgrade head && alembic revision --autogenerate"
 ```
 
 This will generate a database migration revision which you should then go and inspect to see what migrations have been
