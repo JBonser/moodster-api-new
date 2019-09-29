@@ -20,5 +20,9 @@ def create_mood_template(db: Session, template: schema.MoodTemplateCreate):
     return mood_template
 
 
-def get_mood_template(db: Session, template_id):
+def get_mood_template(db: Session, template_id: str):
     return db.query(model.MoodTemplate).filter_by(public_id=template_id).first()
+
+
+def get_mood_template_by_name(db: Session, name: str):
+    return db.query(model.MoodTemplate).filter_by(name=name).first()

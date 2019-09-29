@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.mood_templates import crud, schema
 from app.depends import get_db
-from app.exception import NoResourceWithIdError
+from app.exception import NoResourceWithIdError, DuplicateResourceError
 
 router = APIRouter()
 
@@ -20,10 +20,13 @@ async def get_all_mood_templates(db: Session = Depends(get_db)):
     return crud.get_all_mood_templates(db)
 
 
-@router.post("/", response_model=schema.MoodTemplate)
+@router.post("/", response_model=schema.MoodTemplate, status_code=201)
 async def create_mood_template(
-    template: schema.MoodTemplate, db: Session = Depends(get_db)
+    template: schema.MoodTemplateCreate, db: Session = Depends(get_db)
 ):
+    mood_template = crud.get_mood_template_by_name(db, template.name)
+    if mood_template:
+        raise DuplicateResourceError(resource="mood_template", value="name")
     return crud.create_mood_template(db, template)
 
 
