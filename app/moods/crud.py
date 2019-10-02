@@ -30,7 +30,3 @@ def create_mood(db: Session, name: str, colour: str, template_id: str):
 
 def get_mood(db: Session, mood_id: str):
     return db.query(model.Mood).filter_by(public_id=mood_id).first()
-
-
-def get_mood_by_name(db: Session, name: str):
-    return db.query(model.MoodTemplate).filter_by(name=name).first()

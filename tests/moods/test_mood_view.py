@@ -79,6 +79,20 @@ def test_mood_creation_success(db_session, test_mood_create):
     assert "public_id" in json_response
 
 
+def test_mood_creation_with_invalid_template_id_fails(db_session, test_mood_create):
+    mood_create, _ = test_mood_create
+    invalid_id = "invalid-id"
+    mood_create.template_id = invalid_id
+    response = client.post("/moods/", json=jsonable_encoder(mood_create))
+    json_response = response.json()
+
+    assert response.status_code == 404
+    assert (
+        json_response["detail"]
+        == f"The mood_template with id {invalid_id} does not exist"
+    )
+
+
 def test_mood_get_all_success(db_session, test_mood_create):
     mood_create1, mood_create2 = test_mood_create
     mood1 = create_mood(

@@ -20,9 +20,8 @@ def test_mood_templates(db_session):
 def test_mood_template_creation(db_session, test_mood_templates):
     test_template, _ = test_mood_templates
     response = client.post("/mood_templates/", json=test_template.dict())
-    print(response)
     json_response = response.json()
-    print(json_response)
+
     assert response.status_code == 201
     assert json_response["name"] == test_template.name
     assert "public_id" in json_response
