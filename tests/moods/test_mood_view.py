@@ -34,12 +34,7 @@ def test_mood_create(test_mood_templates):
 
 def test_mood_get_success(db_session, test_mood_create):
     mood_create, _ = test_mood_create
-    mood = create_mood(
-        db_session,
-        mood_create.name,
-        mood_create.colour.as_hex(),
-        mood_create.template_id,
-    )
+    mood = create_mood(db_session, mood_create)
 
     response = client.get(f"/moods/{mood.public_id}")
     json_response = response.json()
@@ -53,12 +48,7 @@ def test_mood_get_success(db_session, test_mood_create):
 def test_mood_get_fails_with_invalid_id(db_session, test_mood_create):
     invalid_id = "invalid_id"
     mood_create, _ = test_mood_create
-    create_mood(
-        db_session,
-        mood_create.name,
-        mood_create.colour.as_hex(),
-        mood_create.template_id,
-    )
+    create_mood(db_session, mood_create)
 
     response = client.get(f"/moods/{invalid_id}")
     json_response = response.json()
@@ -95,18 +85,8 @@ def test_mood_creation_with_invalid_template_id_fails(db_session, test_mood_crea
 
 def test_mood_get_all_success(db_session, test_mood_create):
     mood_create1, mood_create2 = test_mood_create
-    mood1 = create_mood(
-        db_session,
-        mood_create1.name,
-        mood_create1.colour.as_hex(),
-        mood_create1.template_id,
-    )
-    mood2 = create_mood(
-        db_session,
-        mood_create2.name,
-        mood_create2.colour.as_hex(),
-        mood_create2.template_id,
-    )
+    mood1 = create_mood(db_session, mood_create1)
+    mood2 = create_mood(db_session, mood_create2)
 
     response = client.get("/moods")
 
@@ -137,18 +117,8 @@ def test_mood_get_all_success(db_session, test_mood_create):
 
 def test_mood_get_all_with_template_id_success(db_session, test_mood_create):
     mood_create1, mood_create2 = test_mood_create
-    mood1 = create_mood(
-        db_session,
-        mood_create1.name,
-        mood_create1.colour.as_hex(),
-        mood_create1.template_id,
-    )
-    mood2 = create_mood(
-        db_session,
-        mood_create2.name,
-        mood_create2.colour.as_hex(),
-        mood_create2.template_id,
-    )
+    mood1 = create_mood(db_session, mood_create1)
+    mood2 = create_mood(db_session, mood_create2)
     response = client.get(f"/moods/?template_id={mood_create1.template_id}")
 
     assert response.status_code == 200

@@ -6,6 +6,7 @@ import uuid
 from sqlalchemy.orm import Session
 
 from app.moods import model
+from app.moods.schema import MoodCreate
 from app.mood_templates.crud import get_mood_template
 
 
@@ -17,10 +18,13 @@ def get_all_moods(db: Session, template_id: str = None):
     return query.all()
 
 
-def create_mood(db: Session, name: str, colour: str, template_id: str):
-    template = get_mood_template(db, template_id)
+def create_mood(db: Session, mood: MoodCreate):
+    template = get_mood_template(db, mood.template_id)
     mood_model = model.Mood(
-        public_id=str(uuid.uuid4()), name=name, colour=colour, template=template
+        public_id=str(uuid.uuid4()),
+        name=mood.name,
+        colour=mood.colour.as_hex(),
+        template=template,
     )
     db.add(mood_model)
     db.commit()

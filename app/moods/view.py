@@ -21,7 +21,7 @@ async def create_mood(mood: schema.MoodCreate, db: Session = Depends(get_db)):
     template = get_mood_template(db, mood.template_id)
     if not template:
         raise NoResourceWithIdError("mood_template", mood.template_id)
-    return crud.create_mood(db, mood.name, mood.colour.as_hex(), mood.template_id)
+    return crud.create_mood(db, mood)
 
 
 @router.get("/{mood_id}", response_model=schema.Mood)
@@ -36,8 +36,6 @@ async def get_mood(mood_id: str, db: Session = Depends(get_db)):
 async def get_all_moods(template_id: str = None, db: Session = Depends(get_db)):
     if template_id:
         template = get_mood_template(db, template_id)
-        print("CanI see anythin??")
         if not template:
-            print("hit this bit that it thinks it doesn't")
             raise NoResourceWithIdError("mood_template", template_id)
     return crud.get_all_moods(db, template_id)
