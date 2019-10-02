@@ -12,7 +12,8 @@ from app.mood_templates.crud import get_mood_template
 def get_all_moods(db: Session, template_id: str = None):
     query = db.query(model.Mood)
     if template_id:
-        query.filter_by(template_id=template_id)
+        template = get_mood_template(db, template_id)
+        query = query.filter_by(template_id=template.id)
     return query.all()
 
 
