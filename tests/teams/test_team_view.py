@@ -16,9 +16,15 @@ def test_team_create():
     return test_user_create
 
 
-def test_team_get_success(db_session, test_team_create, token_fixture):
-    team = create_team(db_session, test_team_create)
-    response = client.get(f"/teams/{team.public_id}")
+def test_team_get_success(
+    db_session,
+    test_team_create,
+    default_team_roles,
+    default_db_user,
+    default_user_auth_header,
+):
+    team = create_team(db_session, test_team_create, default_db_user)
+    response = client.get(f"/teams/{team.public_id}", headers=default_user_auth_header)
     json_response = response.json()
 
     assert response.status_code == 200
@@ -35,8 +41,19 @@ def test_team_get_fails_with_invalid_id(db_session, token_fixture):
     assert json_response["detail"] == f"The team with id {team_id} does not exist"
 
 
-def test_team_creation(db_session, test_team_create):
-    response = client.post("/teams/", json=test_team_create.dict())
+def test_team_get_fails_without_authenticating(db_session):
+    response = client.get(f"/teams/any_id")
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Not authenticated"
+
+
+def test_team_creation_success(
+    db_session, default_team_roles, default_user_auth_header, test_team_create
+):
+    response = client.post(
+        "/teams/", json=test_team_create.dict(), headers=default_user_auth_header
+    )
     json_response = response.json()
 
     assert response.status_code == 201
@@ -44,10 +61,17 @@ def test_team_creation(db_session, test_team_create):
     assert "public_id" in json_response
 
 
-def test_team_creation_no_name(db_session):
-    response = client.post("/teams/", json={})
+def test_team_creation_no_name(db_session, default_user_auth_header):
+    response = client.post("/teams/", json={}, headers=default_user_auth_header)
     json_response = response.json()
 
     assert response.status_code == 422
     assert json_response["detail"][0]["msg"] == "field required"
     assert json_response["detail"][0]["type"] == "value_error.missing"
+
+
+def test_team_creation_fails_without_authenticating(db_session):
+    response = client.post("/teams/", json={})
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Not authenticated"

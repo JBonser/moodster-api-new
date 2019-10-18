@@ -1,0 +1,2 @@
+ADMIN_ROLE_NAME = "Admin"
+MEMBER_ROLE_NAME = "Member"

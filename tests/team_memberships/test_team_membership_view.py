@@ -24,11 +24,11 @@ def test_users(db_session):
 
 
 @pytest.fixture()
-def test_teams(db_session):
+def test_teams(db_session, default_db_user, default_team_roles):
     team1 = TeamCreate(name="Team1")
     team2 = TeamCreate(name="Team2")
-    test_team1 = create_team(db_session, team1)
-    test_team2 = create_team(db_session, team2)
+    test_team1 = create_team(db_session, team1, default_db_user)
+    test_team2 = create_team(db_session, team2, default_db_user)
     return test_team1, test_team2
 
 
