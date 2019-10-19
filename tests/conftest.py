@@ -13,6 +13,10 @@ from app.team_roles.schema import TeamRoleCreate
 from app.team_roles.crud import create_team_role
 from tests.dependency_overrides import auth_required_override
 from app.auth.logic import create_access_token
+from app.mood_templates.crud import create_mood_template
+from app.mood_templates.schema import MoodTemplateCreate
+from app.moods.crud import create_mood
+from app.moods.schema import MoodCreate
 
 
 @pytest.fixture(scope="session")
@@ -86,6 +90,39 @@ def default_team_roles(db_session):
     admin = create_team_role(db=db_session, team_role=admin_role)
 
     return member, admin
+
+
+@pytest.fixture()
+def default_moods(db_session):
+    """
+    Test fixture for creating the default template and moods
+    """
+    default_template = MoodTemplateCreate(name="Default Mood Template")
+    mood_template = create_mood_template(db_session, default_template)
+
+    awful = create_mood(
+        db_session,
+        MoodCreate(name="Awful", colour="#e05f4e", template_id=mood_template.public_id),
+    )
+    poor = create_mood(
+        db_session,
+        MoodCreate(name="Poor", colour="#e28f53", template_id=mood_template.public_id),
+    )
+    okay = create_mood(
+        db_session,
+        MoodCreate(name="Okay", colour="#ede357", template_id=mood_template.public_id),
+    )
+    great = create_mood(
+        db_session,
+        MoodCreate(name="Great", colour="#5e95ed", template_id=mood_template.public_id),
+    )
+    amazing = create_mood(
+        db_session,
+        MoodCreate(
+            name="Amazing", colour="#53d192", template_id=mood_template.public_id
+        ),
+    )
+    return awful, poor, okay, great, amazing
 
 
 @pytest.fixture()

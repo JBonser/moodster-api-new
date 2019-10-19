@@ -9,3 +9,4 @@ from app.team_roles.model import TeamRole  # noqa
 from app.team_memberships.model import Membership  # noqa
 from app.mood_templates.model import MoodTemplate  # noqa
 from app.moods.model import Mood  # noqa
+from app.team_member_moods.model import TeamMemberMoods  # noqa
