@@ -22,6 +22,7 @@ def create_team_membership(db: Session, user: User, team: Team, role: TeamRole):
     membership = model.Membership(
         public_id=str(uuid.uuid4()), team=team, user=user, role=role
     )
+
     db.add(membership)
     db.commit()
     db.refresh(membership)

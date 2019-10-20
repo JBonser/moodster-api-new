@@ -20,5 +20,9 @@ def create_team_role(db: Session, team_role: schema.TeamRoleCreate):
     return team_role
 
 
-def get_role(db: Session, role_id):
+def get_role(db: Session, role_id: str):
     return db.query(model.TeamRole).filter_by(public_id=role_id).first()
+
+
+def get_role_by_name(db: Session, role_name: str):
+    return db.query(model.TeamRole).filter_by(name=role_name).first()

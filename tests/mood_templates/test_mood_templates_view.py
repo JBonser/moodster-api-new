@@ -20,6 +20,7 @@ def test_mood_templates(db_session):
 def test_mood_template_creation(db_session, test_mood_templates):
     test_template, _ = test_mood_templates
     response = client.post("/mood_templates/", json=test_template.dict())
+
     json_response = response.json()
 
     assert response.status_code == 201

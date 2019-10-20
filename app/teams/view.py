@@ -16,8 +16,12 @@ router = APIRouter()
 
 
 @router.post("/", response_model=schema.Team, status_code=201)
-async def create_team(team: schema.TeamCreate, db: Session = Depends(get_db)):
-    return crud.create_team(db=db, team=team)
+async def create_team(
+    team: schema.TeamCreate,
+    db: Session = Depends(get_db),
+    auth_user: User = Depends(auth_required),
+):
+    return crud.create_team(db=db, team=team, user=auth_user)
 
 
 @router.get("/{team_id}", response_model=schema.Team)

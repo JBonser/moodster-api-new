@@ -5,14 +5,13 @@ the session object which is used by all the routes for database connection/query
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 
 from app import config
 
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+
+
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-db_session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine)
-)
 Base = declarative_base()
