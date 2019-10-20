@@ -9,6 +9,7 @@ chardet
 Click
 codecov
 colour
+python-dateutil
 dataclasses
 entrypoints
 fastapi[all]

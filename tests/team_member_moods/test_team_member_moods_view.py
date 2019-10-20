@@ -2,6 +2,8 @@
 Test module for the team membership resource/endpoint.
 """
 from starlette.testclient import TestClient
+from datetime import datetime
+from dateutil.parser import parse
 import pytest
 from app.main import app
 from app.users.schema import UserCreate
@@ -57,6 +59,12 @@ def test_team_member_mood_post_single_mood_addition(
     assert response.status_code == 201
     assert json_response["team"]["public_id"] == test_team1.public_id
     assert json_response["mood"]["public_id"] == awful.public_id
+
+    # The created at time is within the last 30 seconds
+    created_at = parse(json_response["mood"]["created_at"])
+    delta = created_at - datetime.today()
+    assert delta.total_seconds() < 30
+
     assert "user" not in json_response
     assert "public_id" in json_response
 
