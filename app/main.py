@@ -14,6 +14,7 @@ from app.team_roles.view import router as team_role_router
 from app.team_memberships.view import router as team_membership_router
 from app.mood_templates.view import router as mood_template_router
 from app.moods.view import router as mood_router
+from app.team_member_moods.view import router as member_mood_router
 from app.database.base import Session
 
 app = FastAPI(title="Moodster API")
@@ -26,6 +27,9 @@ app.include_router(
     mood_template_router, prefix="/mood_templates", tags=["mood_templates"]
 )
 app.include_router(mood_router, prefix="/moods", tags=["moods"])
+app.include_router(
+    member_mood_router, prefix="/team_member_moods", tags=["team_member_moods"]
+)
 
 
 @app.middleware("http")
