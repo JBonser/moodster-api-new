@@ -5,6 +5,7 @@ setup(
     version=0.1,
     packages=["app"],
     install_requires=[
+        "python-dateutil",
         "dataclasses",
         "fastapi",
         "pkg-resources",
